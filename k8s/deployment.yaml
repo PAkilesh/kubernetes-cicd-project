@@ -20,8 +20,8 @@ spec:
     spec:
       containers:
         - name: project5-app
-          image: project5-app:v4
-          imagePullPolicy: Never
+          image: ghcr.io/pakilesh/kubernetes-cicd-project:ce3e20f6bc8e4f12940fe15767bdbda8bc53e79a
+          imagePullPolicy: IfNotPresent
 
           envFrom:
             - configMapRef:
