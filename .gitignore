@@ -1,0 +1,19 @@
+# Kubernetes secrets
+k8s/secret.yaml
+
+# Docker image archives
+*.tar
+
+# Python
+__pycache__/
+*.pyc
+
+# Environment files
+.env
+.env.*
+
+# IDE / OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
