@@ -3,9 +3,9 @@ kind: Deployment
 
 metadata:
   name: project5-app
+  namespace: project5
   annotations:
     reloader.stakater.com/auto: "true"
-  namespace: project5
 
 spec:
   replicas: 3
@@ -22,8 +22,6 @@ spec:
     spec:
       containers:
         - name: project5-app
-  annotations:
-    reloader.stakater.com/auto: "true"
           image: ghcr.io/pakilesh/kubernetes-cicd-project:ce3e20f6bc8e4f12940fe15767bdbda8bc53e79a
           imagePullPolicy: IfNotPresent
 
