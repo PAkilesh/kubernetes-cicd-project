@@ -1,4 +1,4 @@
-name: Project 5 CI
+name: Project 5 CI/CD
 
 on:
   push:
@@ -9,11 +9,11 @@ on:
       - main
 
 permissions:
-  contents: read
+  contents: write
   packages: write
 
 jobs:
-  test-and-build:
+  test-build-deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -41,6 +41,7 @@ jobs:
           pytest -v
 
       - name: Log in to GitHub Container Registry
+        if: github.event_name == 'push'
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
@@ -48,9 +49,33 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build Docker image
+        if: github.event_name == 'push'
         run: |
-          docker build -t ghcr.io/pakilesh/kubernetes-cicd-project:${{ github.sha }} ./app
+          docker build \
+            -t ghcr.io/pakilesh/kubernetes-cicd-project:${{ github.sha }} \
+            ./app
 
       - name: Push Docker image
+        if: github.event_name == 'push'
         run: |
           docker push ghcr.io/pakilesh/kubernetes-cicd-project:${{ github.sha }}
+
+      - name: Update Kubernetes image
+        if: github.event_name == 'push'
+        run: |
+          sed -i \
+            "s|image: ghcr.io/pakilesh/kubernetes-cicd-project:.*|image: ghcr.io/pakilesh/kubernetes-cicd-project:${{ github.sha }}|" \
+            k8s/deployment.yaml
+
+      - name: Commit deployment manifest
+        if: github.event_name == 'push'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add k8s/deployment.yaml
+
+          git diff --cached --quiet || \
+          git commit -m "Deploy image ${{ github.sha }} [skip ci]"
+
+          git push
