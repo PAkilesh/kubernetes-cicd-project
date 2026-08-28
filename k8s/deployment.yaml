@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
         - name: project5-app
-          image: ghcr.io/pakilesh/kubernetes-cicd-project:298ea877ddf8e34d0b8766c2f5db02b048a1f03d
+          image: ghcr.io/pakilesh/kubernetes-cicd-project:b641231857b0931ac612576acede045057382d4b
           imagePullPolicy: IfNotPresent
 
           envFrom:
