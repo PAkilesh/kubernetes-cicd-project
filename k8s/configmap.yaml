@@ -7,5 +7,5 @@ metadata:
 
 data:
   APP_ENV: "production"
-  APP_MESSAGE: "Project 5 ConfigMap Updated Successfully"
+  APP_MESSAGE: "Project 5 Deployed Automatically by Argo CD"
 
